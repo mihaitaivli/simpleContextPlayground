@@ -1,14 +1,23 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useRef } from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import {TabContext} from "../context/TabContext";
 
 const Tab:FC<{value: number}> = ({value}) => {
     const {selectedTab, setSelectedTab} = useContext(TabContext)
     const isCurrentSelected = () => selectedTab === value
+    const tabRef = useRef(null)
+
     return (
         <div
             className={css(styles.tab, isCurrentSelected() && styles.selected)}
-            onClick={() => setSelectedTab(value)}
+            onClick={() => {
+                setSelectedTab(value)
+                // @ts-ignore
+                tabRef.current.scrollIntoView({
+                    behaviour: "smooth"
+                })
+            }}
+            ref={tabRef}
         >
             {"Tab" + value}
         </div>
